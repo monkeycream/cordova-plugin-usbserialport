@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/king2088/cordova-plugin-usbserialport.git"
+    "url": "git+https://github.com/monkeycream/cordova-plugin-usbserialport.git"
   },
   "keywords": [
     "cordova",
@@ -20,10 +20,10 @@
     "cordova plugin",
     "android"
   ],
-  "author": "Tony Tao",
+  "author": "monkeycream",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/king2088/cordova-plugin-usbserialport/issues"
+    "url": "https://github.com/monkeycream/cordova-plugin-usbserialport"
   },
-  "homepage": "https://github.com/king2088/cordova-plugin-usbserialport#readme"
+  "homepage": "https://github.com/monkeycream/cordova-plugin-usbserialport"
 }
