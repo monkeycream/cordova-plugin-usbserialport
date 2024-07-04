@@ -6,8 +6,11 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.util.Log;
+
+import java.util.List;
 
 public class UsbBroadcastReceiver extends BroadcastReceiver {
 	// logging tag
@@ -18,15 +21,27 @@ public class UsbBroadcastReceiver extends BroadcastReceiver {
 	private CallbackContext callbackContext;
 	// cordova activity to use it to unregister this broadcast receiver
 	private Activity activity;
+
+	private UsbManager manager;
+	private UsbDevice device;
+
+	public UsbBroadcastReceiver(CallbackContext callbackContext, Activity activity)
+	{
+		this.callbackContext = callbackContext;
+		this.activity = activity;
+	}
 	
 	/**
 	 * Custom broadcast receiver that will handle the cordova callback context
 	 * @param callbackContext
 	 * @param activity
 	 */
-	public UsbBroadcastReceiver(CallbackContext callbackContext, Activity activity) {
+	public UsbBroadcastReceiver(CallbackContext callbackContext, Activity activity, UsbManager manager, UsbDevice device)
+	{
 		this.callbackContext = callbackContext;
 		this.activity = activity;
+		this.manager = manager;
+		this.device = device;
 	}
 
 	
@@ -40,8 +55,19 @@ public class UsbBroadcastReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		if (USB_PERMISSION.equals(action)) {
-			// deal with the user answer about the permission
-			if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+
+			boolean hasPerm;
+			if (this.manager != null)
+			{
+				hasPerm = manager.hasPermission(device);
+			}
+			else
+			{
+				// deal with the user answer about the permission
+				hasPerm = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false);
+			}
+			Log.d(TAG, "hasPerm = " + hasPerm);
+			if (hasPerm) {
 				Log.d(TAG, "Permission to connect to the device was accepted!");
 				callbackContext.success("Permission to connect to the device was accepted!");
 			} 
